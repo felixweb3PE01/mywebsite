@@ -1,0 +1,2027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Felix - Solidity Developer Portfolio</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23627eea;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2300d4aa;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='%230a0a0a'/%3E%3Ctext x='15' y='70' font-family='Arial Black' font-size='65' font-weight='900' fill='url(%23grad)'%3EF%3C/text%3E%3Cpath d='M 65,25 L 50,45 L 65,65 L 80,45 Z' fill='%23627eea' opacity='0.8'/%3E%3Cpath d='M 65,45 L 50,65 L 65,75 L 80,65 Z' fill='%2300d4aa' opacity='0.6'/%3E%3C/svg%3E">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #627eea;
+            --secondary: #00d4aa;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --card: rgba(18, 18, 18, 0.7);
+            --border: rgba(98, 126, 234, 0.2);
+            --text: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.7);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .bg-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            animation: drift 30s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            top: -150px;
+            left: -150px;
+        }
+
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: var(--secondary);
+            bottom: -200px;
+            right: -200px;
+            animation-delay: 10s;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, -50px); }
+        }
+
+        .grid-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 1rem 6%;
+            box-shadow: 0 5px 30px rgba(98, 126, 234, 0.1);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            position: relative;
+        }
+
+        .logo-icon::before,
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .logo-icon::before {
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 17.5px solid transparent;
+            border-right: 17.5px solid transparent;
+            border-bottom: 17.5px solid var(--primary);
+        }
+
+        .logo-icon::after {
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 17.5px solid transparent;
+            border-right: 17.5px solid transparent;
+            border-top: 17.5px solid var(--secondary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text);
+        }
+
+        nav a:hover::before, nav a.active::before {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary);
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 6%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-content {
+            max-width: 50%;
+        }
+
+        .hero-visual {
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .eth-logo-container {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            animation: float-rotate 20s infinite ease-in-out;
+        }
+
+        @keyframes float-rotate {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+            }
+        }
+
+        .eth-logo-3d {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: spin3d 15s linear infinite;
+        }
+
+        @keyframes spin3d {
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .eth-face {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: drop-shadow(0 0 30px var(--primary));
+        }
+
+        .eth-face.front {
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 225px solid var(--primary);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 20px var(--primary));
+                opacity: 1;
+            }
+            50% {
+                filter: drop-shadow(0 0 50px var(--secondary));
+                opacity: 0.8;
+            }
+        }
+
+        .eth-face.back {
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 225px solid var(--secondary);
+            animation: pulse-glow 3s ease-in-out infinite 1.5s;
+        }
+
+        .blockchain-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: particle-float 8s infinite ease-in-out;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        @keyframes particle-float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-200px) translateX(50px);
+            }
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            background: rgba(98, 126, 234, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+            animation: fadeUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            animation: fadeUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 700px;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            animation: fadeUp 0.8s ease-out 0.6s backwards;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            animation: fadeUp 0.8s ease-out 0.8s backwards;
+        }
+
+        .btn {
+            padding: 1.1rem 2.5rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 2px solid;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(98, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(98, 126, 234, 0.2);
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .eth-diamond {
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 70px solid var(--border);
+            position: absolute;
+            opacity: 0.3;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        .eth-diamond::after {
+            content: '';
+            position: absolute;
+            top: 70px;
+            left: -40px;
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-top: 70px solid rgba(98, 126, 234, 0.1);
+        }
+
+        .shape-1 {
+            top: 15%;
+            left: 8%;
+        }
+
+        .shape-2 {
+            top: 55%;
+            right: 12%;
+            animation-delay: 8s;
+        }
+
+        .shape-3 {
+            top: 70%;
+            left: 15%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-40px) rotate(180deg);
+            }
+        }
+
+        section {
+            padding: 8rem 6%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title .accent {
+            color: var(--primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: var(--card);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(98, 126, 234, 0.2);
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .skill-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(98, 126, 234, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: rotateY(360deg);
+            background: rgba(98, 126, 234, 0.2);
+        }
+
+        .skill-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .skill-card p {
+            color: var(--text-dim);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+
+        .tag {
+            padding: 0.5rem 1rem;
+            background: rgba(98, 126, 234, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: rgba(98, 126, 234, 0.2);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 50px rgba(98, 126, 234, 0.3);
+        }
+
+        .project-banner {
+            width: 100%;
+            height: 200px;
+            background: rgba(98, 126, 234, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-banner {
+            background: rgba(98, 126, 234, 0.1);
+            transform: scale(1.1);
+        }
+
+        .project-info {
+            padding: 2rem;
+        }
+
+        .project-info h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .project-info p {
+            color: var(--text-dim);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .article-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 50px rgba(98, 126, 234,0.3);
+        }
+
+        .article-meta {
+            padding: 2rem;
+        }
+
+        .article-date {
+            color: var(--secondary);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .article-card p {
+            color: var(--text-dim);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .article-card:hover .read-more {
+            gap: 1rem;
+        }
+
+        .contact-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .contact-info h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            line-height: 1.9;
+            margin-bottom: 2rem;
+        }
+
+        .contact-form {
+            background: var(--card);
+            padding: 3rem;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            width: 60px;
+            height: 60px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(98, 126, 234, 0.4);
+        }
+
+        footer {
+            padding: 3rem 6%;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim);
+            position: relative;
+            z-index: 10;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+
+        #preloader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-container {
+            text-align: center;
+            position: relative;
+        }
+
+        .hexagon-loader {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+        }
+
+        .hexagon {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            animation: rotate-hexagon 3s linear infinite;
+        }
+
+        @keyframes rotate-hexagon {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hex-side {
+            position: absolute;
+            width: 100px;
+            height: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            left: 50%;
+            top: 50%;
+            transform-origin: center;
+            opacity: 0;
+            animation: fade-side 3s ease-in-out infinite;
+        }
+
+        .hex-side:nth-child(1) {
+            transform: translate(-50%, -50%) rotate(0deg) translateY(-50px);
+            animation-delay: 0s;
+        }
+
+        .hex-side:nth-child(2) {
+            transform: translate(-50%, -50%) rotate(60deg) translateY(-50px);
+            animation-delay: 0.5s;
+        }
+
+        .hex-side:nth-child(3) {
+            transform: translate(-50%, -50%) rotate(120deg) translateY(-50px);
+            animation-delay: 1s;
+        }
+
+        .hex-side:nth-child(4) {
+            transform: translate(-50%, -50%) rotate(180deg) translateY(-50px);
+            animation-delay: 1.5s;
+        }
+
+        .hex-side:nth-child(5) {
+            transform: translate(-50%, -50%) rotate(240deg) translateY(-50px);
+            animation-delay: 2s;
+        }
+
+        .hex-side:nth-child(6) {
+            transform: translate(-50%, -50%) rotate(300deg) translateY(-50px);
+            animation-delay: 2.5s;
+        }
+
+        @keyframes fade-side {
+            0%, 100% {
+                opacity: 0;
+                box-shadow: 0 0 0 var(--primary);
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 30px var(--secondary);
+            }
+        }
+
+        .loader-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-flow 2s linear infinite;
+        }
+
+        @keyframes gradient-flow {
+            to {
+                background-position: 200% 0;
+            }
+        }
+
+        .loading-dots {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text-dim);
+            margin-top: 1rem;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% {
+                content: '.';
+            }
+            40% {
+                content: '..';
+            }
+            60%, 100% {
+                content: '...';
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .hero {
+                padding: 0 4%;
+            }
+            
+            .hero h1 {
+                font-size: 4rem;
+            }
+
+            .eth-logo-container {
+                width: 380px;
+                height: 380px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+
+            .eth-logo-container {
+                width: 350px;
+                height: 350px;
+            }
+
+            .eth-face.front {
+                border-left: 120px solid transparent;
+                border-right: 120px solid transparent;
+                border-bottom: 180px solid var(--primary);
+            }
+
+            .eth-face.back {
+                border-left: 120px solid transparent;
+                border-right: 120px solid transparent;
+                border-top: 180px solid var(--secondary);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                gap: 2rem;
+            }
+
+            .hero {
+                gap: 3rem;
+                padding: 0 4%;
+            }
+
+            .hero-content {
+                max-width: 55%;
+            }
+
+            .hero-visual {
+                width: 45%;
+            }
+
+            .eth-logo-container {
+                width: 320px;
+                height: 320px;
+            }
+
+            .eth-face.front {
+                border-left: 110px solid transparent;
+                border-right: 110px solid transparent;
+                border-bottom: 165px solid var(--primary);
+            }
+
+            .eth-face.back {
+                border-left: 110px solid transparent;
+                border-right: 110px solid transparent;
+                border-top: 165px solid var(--secondary);
+            }
+        }
+
+        @media (max-width: 900px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                max-width: 300px;
+                height: 100vh;
+                background: rgba(10, 10, 10, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 6rem 2rem;
+                gap: 2rem;
+                transition: right 0.4s ease;
+                border-left: 1px solid var(--border);
+                z-index: 999;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                gap: 2rem;
+            }
+
+            .hero-content {
+                max-width: 52%;
+            }
+
+            .hero-visual {
+                width: 48%;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero h2 {
+                font-size: 1.4rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .eth-logo-container {
+                width: 280px;
+                height: 280px;
+            }
+
+            .eth-face.front {
+                border-left: 95px solid transparent;
+                border-right: 95px solid transparent;
+                border-bottom: 145px solid var(--primary);
+            }
+
+            .eth-face.back {
+                border-left: 95px solid transparent;
+                border-right: 95px solid transparent;
+                border-top: 145px solid var(--secondary);
+            }
+
+            .section-title {
+                font-size: 2.8rem;
+            }
+
+            .skills-grid,
+            .projects-grid,
+            .articles-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 4%;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .logo-icon {
+                width: 30px;
+                height: 30px;
+            }
+
+            section {
+                padding: 6rem 4%;
+            }
+
+            .hero {
+                min-height: auto;
+                padding-top: 6rem;
+                padding-bottom: 4rem;
+                gap: 2rem;
+            }
+
+            .hero-content {
+                max-width: 50%;
+            }
+
+            .hero-visual {
+                width: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .eth-logo-container {
+                width: 240px;
+                height: 240px;
+            }
+
+            .eth-face.front {
+                border-left: 80px solid transparent;
+                border-right: 80px solid transparent;
+                border-bottom: 120px solid var(--primary);
+            }
+
+            .eth-face.back {
+                border-left: 80px solid transparent;
+                border-right: 80px solid transparent;
+                border-top: 120px solid var(--secondary);
+            }
+
+            .hero-tag {
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero h2 {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+                margin-bottom: 2rem;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn {
+                padding: 0.9rem 1.8rem;
+                font-size: 0.95rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .section-subtitle {
+                font-size: 1rem;
+            }
+
+            #about p {
+                font-size: 1rem !important;
+            }
+
+            .skills-grid,
+            .projects-grid,
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .skill-card,
+            .project-card,
+            .article-card {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding-top: 5rem;
+            }
+
+            .hero-content {
+                max-width: 48%;
+            }
+
+            .hero-visual {
+                width: 52%;
+            }
+
+            .eth-logo-container {
+                width: 200px;
+                height: 200px;
+            }
+
+            .eth-face.front {
+                border-left: 65px solid transparent;
+                border-right: 65px solid transparent;
+                border-bottom: 100px solid var(--primary);
+            }
+
+            .eth-face.back {
+                border-left: 65px solid transparent;
+                border-right: 65px solid transparent;
+                border-top: 100px solid var(--secondary);
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero h2 {
+                font-size: 0.95rem;
+            }
+
+            .hero p {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+
+            .hero-tag {
+                font-size: 0.7rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 0.9rem 3%;
+            }
+
+            nav ul {
+                width: 75%;
+            }
+
+            section {
+                padding: 5rem 3%;
+            }
+
+            .hero {
+                padding-left: 3%;
+                padding-right: 3%;
+                padding-top: 4.5rem;
+            }
+
+            .hero-content {
+                max-width: 47%;
+            }
+
+            .hero-visual {
+                width: 53%;
+            }
+
+            .eth-logo-container {
+                width: 170px;
+                height: 170px;
+            }
+
+            .eth-face.front {
+                border-left: 55px solid transparent;
+                border-right: 55px solid transparent;
+                border-bottom: 85px solid var(--primary);
+            }
+
+            .eth-face.back {
+                border-left: 55px solid transparent;
+                border-right: 55px solid transparent;
+                border-top: 85px solid var(--secondary);
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero h2 {
+                font-size: 0.85rem;
+            }
+
+            .hero p {
+                font-size: 0.8rem;
+                line-height: 1.5;
+            }
+
+            .hero-tag {
+                font-size: 0.65rem;
+                padding: 0.35rem 0.7rem;
+                margin-bottom: 1rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.3rem;
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .section-subtitle {
+                font-size: 0.9rem;
+            }
+
+            #about p {
+                font-size: 0.95rem !important;
+            }
+
+            .skill-card h3,
+            .project-card h3,
+            .article-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .skill-card p,
+            .project-card p,
+            .article-card p {
+                font-size: 0.95rem;
+            }
+
+            .tag {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .social-link {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .hero-content {
+                max-width: 46%;
+            }
+
+            .hero-visual {
+                width: 54%;
+            }
+
+            .eth-logo-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .eth-face.front {
+                border-left: 48px solid transparent;
+                border-right: 48px solid transparent;
+                border-bottom: 75px solid var(--primary);
+            }
+
+            .eth-face.back {
+                border-left: 48px solid transparent;
+                border-right: 48px solid transparent;
+                border-top: 75px solid var(--secondary);
+            }
+
+            .hero h1 {
+                font-size: 1.3rem;
+            }
+
+            .hero h2 {
+                font-size: 0.75rem;
+            }
+
+            .hero p {
+                font-size: 0.75rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div id="preloader">
+        <div class="loader-container">
+            <div class="hexagon-loader">
+                <div class="hexagon">
+                    <div class="hex-side"></div>
+                    <div class="hex-side"></div>
+                    <div class="hex-side"></div>
+                    <div class="hex-side"></div>
+                    <div class="hex-side"></div>
+                    <div class="hex-side"></div>
+                </div>
+            </div>
+            <p class="loader-text">INITIALIZING BLOCKCHAIN</p>
+            <p class="loading-dots">Loading</p>
+        </div>
+    </div>
+
+    <div class="bg-wrapper">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="grid-bg"></div>
+    </div>
+
+    <nav id="navbar">
+        <div class="logo">
+            <div class="logo-icon"></div>
+            FELIX.ETH
+        </div>
+        <ul id="navLinks">
+            <li><a href="#home" class="nav-link active">HOME</a></li>
+            <li><a href="#about" class="nav-link">ABOUT</a></li>
+            <li><a href="#skills" class="nav-link">SKILLS</a></li>
+            <li><a href="#projects" class="nav-link">PROJECTS</a></li>
+            <li><a href="#articles" class="nav-link">ARTICLES</a></li>
+            <li><a href="#contact" class="nav-link">CONTACT</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="floating-shapes">
+            <div class="eth-diamond shape-1"></div>
+            <div class="eth-diamond shape-2"></div>
+            <div class="eth-diamond shape-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-tag">◆ SOLIDITY DEVELOPER</div>
+            <h1>HI, I'M <span class="highlight">FELIX</span></h1>
+            <h2>Crafting Secure Smart Contracts & DeFi Solutions</h2>
+            <p>I build bulletproof Solidity contracts for the decentralized web. From gas-optimized protocols to complex DeFi architectures, I turn blockchain ideas into production-ready code.</p>
+            <div class="cta-group">
+                <a href="#projects" class="btn btn-primary">VIEW MY WORK</a>
+                <a href="#" class="btn btn-secondary" id="downloadResume">DOWNLOAD RESUME</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="eth-logo-container">
+                <div class="blockchain-particles" id="particles"></div>
+                <div class="eth-logo-3d">
+                    <div class="eth-face front"></div>
+                    <div class="eth-face back"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-header reveal">
+            <h2 class="section-title"><span class="accent">//</span> ABOUT ME</h2>
+            <p class="section-subtitle">Passionate blockchain developer with a mission</p>
+        </div>
+        <div class="reveal" style="max-width: 900px; margin: 0 auto;">
+            <p style="font-size: 1.2rem; color: var(--text-dim); line-height: 1.9; margin-bottom: 2rem;">
+                With over 5 years of experience in blockchain development, I specialize in creating secure, efficient, and innovative smart contracts. My journey in Web3 has led me to work on projects ranging from DeFi protocols handling millions in TVL to cutting-edge NFT platforms.
+            </p>
+            <p style="font-size: 1.2rem; color: var(--text-dim); line-height: 1.9;">
+                I'm passionate about pushing the boundaries of what's possible with blockchain technology, always staying ahead of the curve with the latest developments in Ethereum, Layer 2 solutions, and emerging protocols. My code has been audited by leading security firms and has stood the test of production environments.
+            </p>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="section-header reveal">
+            <h2 class="section-title"><span class="accent">//</span> CORE EXPERTISE</h2>
+            <p class="section-subtitle">Cutting-edge blockchain development skills</p>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-card reveal">
+                <div class="skill-icon">⚡</div>
+                <h3>Smart Contracts</h3>
+                <p>Advanced Solidity development with focus on security, gas optimization, and best practices. 5+ years of production experience.</p>
+                <div class="tags">
+                    <span class="tag">Solidity</span>
+                    <span class="tag">Hardhat</span>
+                    <span class="tag">Foundry</span>
+                    <span class="tag">OpenZeppelin</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon">🔥</div>
+                <h3>DeFi Protocols</h3>
+                <p>Deep expertise in decentralized finance including AMMs, lending platforms, yield aggregators, and liquidity protocols.</p>
+                <div class="tags">
+                    <span class="tag">Uniswap</span>
+                    <span class="tag">Aave</span>
+                    <span class="tag">Compound</span>
+                    <span class="tag">Curve</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon">🎨</div>
+                <h3>NFT Development</h3>
+                <p>Building advanced NFT contracts with royalties, staking mechanics, and dynamic on-chain metadata generation.</p>
+                <div class="tags">
+                    <span class="tag">ERC-721</span>
+                    <span class="tag">ERC-1155</span>
+                    <span class="tag">Metadata</span>
+                    <span class="tag">IPFS</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon">🛡️</div>
+                <h3>Security Auditing</h3>
+                <p>Comprehensive smart contract security analysis, testing, and formal verification to ensure bulletproof code.</p>
+                <div class="tags">
+                    <span class="tag">Slither</span>
+                    <span class="tag">Mythril</span>
+                    <span class="tag">Echidna</span>
+                    <span class="tag">Audits</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon">🌐</div>
+                <h3>Web3 Integration</h3>
+                <p>Full-stack Web3 development with React, Next.js, and modern blockchain libraries for seamless dApp experiences.</p>
+                <div class="tags">
+                    <span class="tag">Ethers.js</span>
+                    <span class="tag">Web3.js</span>
+                    <span class="tag">React</span>
+                    <span class="tag">TypeScript</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon">⚙️</div>
+                <h3>Layer 2 Solutions</h3>
+                <p>Experience with Polygon, Arbitrum, Optimism, zkSync and cross-chain bridge development for scalability.</p>
+                <div class="tags">
+                    <span class="tag">Polygon</span>
+                    <span class="tag">Arbitrum</span>
+                    <span class="tag">zkSync</span>
+                    <span class="tag">Bridges</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="section-header reveal">
+            <h2 class="section-title"><span class="accent">//</span> FEATURED PROJECTS</h2>
+            <p class="section-subtitle">Production-grade blockchain applications</p>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card reveal">
+                <div class="project-banner">💎</div>
+                <div class="project-info">
+                    <h3>DeFi Lending Platform</h3>
+                    <p>Decentralized lending protocol with $50M+ TVL. Features dynamic interest rates, flash loans, and automated liquidation engine.</p>
+                    <div class="tags">
+                        <span class="tag">Solidity</span>
+                        <span class="tag">Chainlink</span>
+                        <span class="tag">DeFi</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <div class="project-banner">🎮</div>
+                <div class="project-info">
+                    <h3>NFT Gaming Marketplace</h3>
+                    <p>Full-featured marketplace with 100k+ transactions. Includes NFT staking, breeding mechanics, and play-to-earn rewards.</p>
+                    <div class="tags">
+                        <span class="tag">ERC-721</span>
+                        <span class="tag">Staking</span>
+                        <span class="tag">Gaming</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <div class="project-banner">🏛️</div>
+                <div class="project-info">
+                    <h3>DAO Governance System</h3>
+                    <p>Complete governance platform with on-chain voting, treasury management, and proposal execution with timelock security.</p>
+                    <div class="tags">
+                        <span class="tag">Governance</span>
+                        <span class="tag">Multisig</span>
+                        <span class="tag">DAO</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <div class="project-banner">🌉</div>
+                <div class="project-info">
+                    <h3>Cross-Chain Bridge</h3>
+                    <p>Secure asset bridge between Ethereum and L2 solutions. Processes $10M+ daily volume with zero security incidents.</p>
+                    <div class="tags">
+                        <span class="tag">Bridge</span>
+                        <span class="tag">Layer 2</span>
+                        <span class="tag">Security</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <div class="project-banner">🔄</div>
+                <div class="project-info">
+                    <h3>DEX Aggregator</h3>
+                    <p>Intelligent DEX aggregator that finds optimal swap routes across 15+ protocols, saving users 12% on average per trade.</p>
+                    <div class="tags">
+                        <span class="tag">DeFi</span>
+                        <span class="tag">Routing</span>
+                        <span class="tag">AMM</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <div class="project-banner">💰</div>
+                <div class="project-info">
+                    <h3>Yield Aggregator</h3>
+                    <p>Automated yield farming platform with multi-protocol strategies, auto-compounding, and advanced risk management.</p>
+                    <div class="tags">
+                        <span class="tag">Yield</span>
+                        <span class="tag">Vaults</span>
+                        <span class="tag">Automation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="articles">
+        <div class="section-header reveal">
+            <h2 class="section-title"><span class="accent">//</span> LATEST ARTICLES</h2>
+            <p class="section-subtitle">Sharing knowledge and insights on blockchain development</p>
+        </div>
+        <div class="articles-grid">
+            <div class="article-card reveal">
+                <div class="article-meta">
+                    <p class="article-date">January 10, 2025</p>
+                    <h3>Advanced Gas Optimization Techniques in Solidity</h3>
+                    <p>Explore cutting-edge strategies to minimize gas costs in your smart contracts without compromising security or functionality.</p>
+                    <span class="read-more">Read More →</span>
+                </div>
+            </div>
+            <div class="article-card reveal">
+                <div class="article-meta">
+                    <p class="article-date">December 28, 2024</p>
+                    <h3>Building Secure Flash Loan Protocols</h3>
+                    <p>A comprehensive guide to implementing flash loans with proper security measures and attack prevention strategies.</p>
+                    <span class="read-more">Read More →</span>
+                </div>
+            </div>
+            <div class="article-card reveal">
+                <div class="article-meta">
+                    <p class="article-date">December 15, 2024</p>
+                    <h3>The Future of Layer 2 Scaling Solutions</h3>
+                    <p>An in-depth analysis of emerging L2 technologies and their impact on Ethereum's scalability and adoption.</p>
+                    <span class="read-more">Read More →</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-wrapper">
+            <div class="section-header reveal">
+                <h2 class="section-title"><span class="accent">//</span> LET'S COLLABORATE</h2>
+                <p class="section-subtitle">Ready to build the future of Web3</p>
+            </div>
+
+            <div class="contact-content">
+                <div class="contact-info reveal">
+                    <h3>Get In Touch</h3>
+                    <p>Available for smart contract development, security audits, and full-stack Web3 projects. Let's create the next generation of decentralized applications together.</p>
+                    <p>Whether you need a complete DeFi protocol, NFT marketplace, or just want to discuss blockchain architecture, I'm here to help bring your vision to life.</p>
+                </div>
+
+                <div class="contact-form reveal">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">SEND MESSAGE</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="social-links reveal">
+                <a href="#" class="social-link" title="GitHub">💻</a>
+                <a href="#" class="social-link" title="Twitter">🐦</a>
+                <a href="#" class="social-link" title="LinkedIn">💼</a>
+                <a href="mailto:felix@blockchain.com" class="social-link" title="Email">✉️</a>
+                <a href="#" class="social-link" title="Discord">💬</a>
+                <a href="#" class="social-link" title="Telegram">📱</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Felix — Ethereum Smart Contract Developer</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Building the decentralized future, one block at a time</p>
+        <div class="footer-links">
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+            <a href="#sitemap">Sitemap</a>
+        </div>
+    </footer>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        const sections = document.querySelectorAll('section');
+        const navLinksAll = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinksAll.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.eth-diamond');
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+            
+            shapes.forEach((shape, i) => {
+                const speed = (i + 1) * 15;
+                shape.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.classList.add('fade-out');
+            }, 2500);
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 3500);
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! I will get back to you soon.');
+            e.target.reset();
+        });
+
+        document.getElementById('downloadResume').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Resume download would start here. Please add your actual resume file.');
+        });
+
+        const heroText = document.querySelector('.hero h2');
+        const text = heroText.textContent;
+        heroText.textContent = '';
+        let i = 0;
+
+        setTimeout(() => {
+            const typeInterval = setInterval(() => {
+                if (i < text.length) {
+                    heroText.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeInterval);
+                }
+            }, 50);
+        }, 1000);
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        const coords = { x: 0, y: 0 };
+        const circles = [];
+        const colors = ['rgba(98, 126, 234, 0.3)', 'rgba(0, 212, 170, 0.3)'];
+
+        for (let i = 0; i < 10; i++) {
+            const circle = document.createElement('div');
+            circle.style.position = 'fixed';
+            circle.style.width = '10px';
+            circle.style.height = '10px';
+            circle.style.borderRadius = '50%';
+            circle.style.backgroundColor = colors[i % 2];
+            circle.style.pointerEvents = 'none';
+            circle.style.zIndex = '9998';
+            circle.style.transition = 'all 0.1s';
+            document.body.appendChild(circle);
+            circles.push(circle);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            coords.x = e.clientX;
+            coords.y = e.clientY;
+        });
+
+        function animateCircles() {
+            let x = coords.x;
+            let y = coords.y;
+
+            circles.forEach((circle, index) => {
+                circle.style.left = x - 5 + 'px';
+                circle.style.top = y - 5 + 'px';
+                circle.style.transform = `scale(${(circles.length - index) / circles.length})`;
+
+                const nextCircle = circles[index + 1] || circles[0];
+                x += (nextCircle.offsetLeft - circle.offsetLeft) * 0.3;
+                y += (nextCircle.offsetTop - circle.offsetTop) * 0.3;
+            });
+
+            requestAnimationFrame(animateCircles);
+        }
+        animateCircles();
+    </script>
+</body>
+</html>
