@@ -1024,7 +1024,31 @@
         }
 
                                                     
+@media (max-width: 900px) {
+    nav ul {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 5rem 2rem;
+        gap: 2rem;
+        transition: right 0.4s ease;
+        border-left: 1px solid var(--border);
+        z-index: 999;
+    }
 
+    nav ul.active {
+        right: 0;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+            }
         .reveal {
             opacity: 0;
             transform: translateY(30px);
